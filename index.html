@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>Snake</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<center>
+			<tt><a href="https://github.com/estuardolh" target="_blank">My Github account</a><tt>
+			<br>
+			<br>
+			<canvas id="my_canvas" width="400" height="400" style="background-color:yellow">
+		</center>
+		
+		<script type="text/javascript" src="./js/snake.js" >
+		</script>
+		
+		<script type="text/javascript" >
+			init();
+		</script>
+		
+		<center>
+			<table>
+				<tr>
+					<td></td>
+					<td><img src="./img/dot.png" onclick="javascript:to_up();"></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><img src="./img/dot.png" onclick="javascript:to_left();"></td>
+					<td></td>
+					<td><img src="./img/dot.png" onclick="javascript:to_right();"></td>
+					<td></td>
+					<td><img src="./img/dot.png" onclick="javascript:eat_please();"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><img src="./img/dot.png" onclick="javascript:to_down();"></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</center>
+	</body>
+</html>
