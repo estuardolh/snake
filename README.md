@@ -5,7 +5,7 @@ Otra implementacion mas del juego "Snake" usando Javascript
 
 TO DO
 =====
-* Poner manzanas para que coma la serpiente.
+* [-Poner manzanas para que coma la serpiente.-]
 * Manejar vidas/puntos en el juego.
 * Cambiar el arte del juego.
 * Agregar sonidos basicos.

@@ -3,6 +3,10 @@ var a_snake = null;
 var game_started = true;
 var my_canvas = document.getElementById("my_canvas");
 
+var an_apple = null;
+var apple_img = null;
+var an_apple_first = true;
+
 /*
 	dot
 */
@@ -17,17 +21,11 @@ function Dot(x, y , w, h, img){
 	this.orientation = "";
 }
 Dot.prototype.draw = function( canvas ){
-							if( !this.img ){
-								console.log("img null");
-							}
-							
 							canvas.getContext("2d").drawImage(this.img, this.x, this.y)
 						};
 Dot.prototype.update = function(){
 							this.x += this.dx;
 							this.y += this.dy;
-							
-							//console.log("updated");
 						};
 Dot.prototype.set_orientation = function( orientation ){
 							switch( orientation ){
@@ -71,8 +69,19 @@ Snake.prototype.set_orientation = function( orientation ){
 Snake.prototype.set_ate = function( ate ){
 							this.ate = ate;
 						};
+Snake.prototype.process_food = function( food ){
+							// head ate something ?
+							var head = this.dots[0];
+							if( food ){
+								if( head.x == food.x && head.y == food.y ){
+									return true;
+								}
+							}
+							
+							return false;
+						};
 Snake.prototype.update = function(){
-							// if first time, insert an apple
+							// if first time, eat an apple please
 							if( this.first ){
 								var new_dot = new Dot(this.x, this.y, this.dot_img.width, this.dot_img.height, this.dot_img );
 								new_dot.set_orientation( "R" );
@@ -83,7 +92,7 @@ Snake.prototype.update = function(){
 								console.log("le first");
 							}
 									
-							// ate an apple ?
+							// they grow so quick :')
 							if( this.ate ){
 								var a_dot_last = this.dots[this.dots.length - 1];
 
@@ -146,11 +155,17 @@ Snake.prototype.draw = function( my_canvas ){
 function init(){
 	a_snake = new Snake(0, 0);
 	
-	// load img
-	var img = new Image();
-	img.src = "./img/dot.png";
-	img.onload = function(){
-					a_snake.dot_img = img;
+	// load imgs
+	var a_dot_img = new Image();
+	a_dot_img.src = "./img/dot.png";
+	a_dot_img.onload = function(){
+					a_snake.dot_img = a_dot_img;
+				};
+				
+	var an_apple_img = new Image();
+	an_apple_img.src = "./img/apple.png";
+	an_apple_img.onload = function(){
+					apple_img = an_apple_img;
 				};
 
 	setInterval(function(){
@@ -162,6 +177,35 @@ function init(){
 function update(){
 	if( game_started ){
 		a_snake.update();
+		
+		if( an_apple_first ){
+			an_apple = new Dot(4 * apple_img.width, 3 * apple_img.height, apple_img.width, apple_img.height, apple_img);
+			
+			console.log("first apple");
+			
+			an_apple_first = false;
+		}
+		
+		// ate apple ?
+		if( a_snake.process_food( an_apple ) ){
+			a_snake.set_ate( true );
+			an_apple = null;
+			
+			console.log("i ate");
+		}
+		
+		if( !an_apple ){
+			// more food please
+			var posx = Math.floor(Math.random() * my_canvas.width / apple_img.width );
+			var posy = Math.floor(Math.random() * my_canvas.height / apple_img.height );
+			
+			posx = posx * apple_img.width;
+			posy = posy * apple_img.height;
+			
+			an_apple = new Dot(posx, posy, apple_img.width, apple_img.height, apple_img);
+			
+			console.log("another apple");
+		}
 	}
 }
 function draw(){
@@ -169,7 +213,10 @@ function draw(){
 	my_canvas.width ++;
 	my_canvas.width --;
 	
-	a_snake.draw(my_canvas);
+	a_snake.draw( my_canvas );
+	if( an_apple ){
+		an_apple.draw( my_canvas );
+	}
 }
 
 
@@ -188,6 +235,6 @@ function to_left(){
 function to_right(){
 	a_snake.set_orientation("R");
 }
-function eat_please(){
+function grow_please(){
 	a_snake.set_ate(true);
 }
