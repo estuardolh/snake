@@ -191,7 +191,8 @@ function update(){
 			a_snake.set_ate( true );
 			an_apple = null;
 			
-			console.log("i ate");
+			playTag("grow");
+			//console.log("i ate");
 		}
 		
 		if( !an_apple ){
@@ -217,6 +218,18 @@ function draw(){
 	if( an_apple ){
 		an_apple.draw( my_canvas );
 	}
+}
+
+function playTag( idSound ){
+	var soundTag = document.getElementById(idSound);
+	soundTag.currentTime = 0;
+	 if( soundTag.paused == true ){
+		 soundTag.volume = 0.5;
+		 soundTag.play();
+	 }
+	 /*else{
+		 soundTag.pause();
+	 }*/
 }
 
 
